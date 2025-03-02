@@ -53,7 +53,7 @@ class _EmployeePageState extends State<EmployeePage> {
             ),
             ElevatedButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   'Add',
                   style: TextStyle(
                     fontSize: 22,
