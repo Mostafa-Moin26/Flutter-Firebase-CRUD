@@ -1,4 +1,7 @@
+import 'package:crud_firebase/service/database.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class EmployeePage extends StatefulWidget {
   const EmployeePage({super.key});
@@ -8,6 +11,9 @@ class EmployeePage extends StatefulWidget {
 }
 
 class _EmployeePageState extends State<EmployeePage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,20 +45,40 @@ class _EmployeePageState extends State<EmployeePage> {
         margin: const EdgeInsets.only(left: 20, right: 20, top: 30),
         child: Column(
           children: [
-            _buildTextField('Name', 'Your name'),
+            _buildTextField('Name', 'Your name', nameController),
             const SizedBox(
               height: 10,
             ),
-            _buildTextField('Age', 'Your age'),
+            _buildTextField('Age', 'Your age', ageController),
             const SizedBox(
               height: 10,
             ),
-            _buildTextField('Location', 'Your location'),
+            _buildTextField('Location', 'Your location', locationController),
             const SizedBox(
               height: 20,
             ),
             ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  String id = randomAlphaNumeric(10);
+                  Map<String, dynamic> employeeInfoMap = {
+                    'Name': nameController.text,
+                    'Age': ageController.text,
+                    'Id': id,
+                    'Location': locationController.text,
+                  };
+                  await DatabaseMethods()
+                      .addEmployeeDetails(employeeInfoMap, id)
+                      .then((value) {
+                    Fluttertoast.showToast(
+                        msg: "Employee details has been added successfully",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  });
+                },
                 child: const Text(
                   'Add',
                   style: TextStyle(
@@ -66,7 +92,8 @@ class _EmployeePageState extends State<EmployeePage> {
     );
   }
 
-  Column _buildTextField(String label, String hint) {
+  Column _buildTextField(
+      String label, String hint, TextEditingController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -90,6 +117,7 @@ class _EmployeePageState extends State<EmployeePage> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              controller: controller,
               decoration: InputDecoration(
                 hintText: hint,
                 hintStyle: const TextStyle(
