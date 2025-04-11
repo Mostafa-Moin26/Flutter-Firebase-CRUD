@@ -58,7 +58,6 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -92,17 +91,37 @@ class _HomePageState extends State<HomePage> {
                                       )
                                     ],
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      nameController.text = ds['Name'];
-                                      ageController.text = ds['Age'];
-                                      locationController.text = ds['Location'];
-                                      editEmployeeDetails(ds['Id']);
-                                    },
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.orange,
-                                    ),
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          nameController.text = ds['Name'];
+                                          ageController.text = ds['Age'];
+                                          locationController.text =
+                                              ds['Location'];
+                                          editEmployeeDetails(ds['Id']);
+                                        },
+                                        child: const Icon(
+                                          Icons.edit,
+                                          color: Colors.orange,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await DatabaseMethods()
+                                              .deleteEmployeeDetails(ds['Id']);
+                                        },
+                                        child: const Icon(
+                                          Icons.delete,
+                                          color: Colors.orange,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
