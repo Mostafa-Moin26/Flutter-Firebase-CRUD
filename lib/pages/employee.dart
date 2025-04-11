@@ -77,6 +77,7 @@ class _EmployeePageState extends State<EmployeePage> {
                         backgroundColor: Colors.red,
                         textColor: Colors.white,
                         fontSize: 16.0);
+                    Navigator.of(context).pop();
                   });
                 },
                 child: const Text(
